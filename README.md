@@ -1,12 +1,49 @@
-# ML-bot-training
-###Training a robot using machine learning to walk
+# Triad OpenVR Python Wrapper
 
-###Here I will be uploading the code for my Machine Learning robot training project, here is a brief description about it:
-This project takes a robot, with no instructions on how to move, and trains it using Machine Learning (Reinforcement Learning) based on camera data (the robots vision) and 3d positional data as inputs. The robot is 'rewarded' based on progress its made from its home position (x=0,y=0,z=0). The outputs of the Machine Learning algorithm are servo motor movements.
+This is an enhanced wrapper for the already excellent [pyopenvr library](https://github.com/cmbruns/pyopenvr) by [cmbruns](https://github.com/cmbruns).  The goal of this library is to create easy to use python functions for any SteamVR tracked system.
 
-The robot is placed in the center of a 'playing field' and its cables run up and through the head of a CNC rig, which surrounds the playing field. When a 'trial' begins the robot will have a certain amount of time to move as far as possible. When the trial ends the robot stops, and is pulled up by its cables by a motorized spool and relocated to its home position by the CNC rig. The next trial starts immeadiatly after, no requiring any human input, thus allowing the system to run 24/7.
+# Getting Started
 
-The robots 3d position is tracked using a HTC Vive Tracker on the robot and two HTC Vive Base Stations on opposite corners of the CNC rig...TO BE UPDATED...
+```python
+import triad_openvr as vr
+import pylab as plt
+v = vr.triad_openvr()
+data = v.devices["controller_1"].sample(1000,250)
+plt.plot(data.time,data.x)
+plt.title('Controller X Coordinate')
+plt.xlabel('Time (seconds)')
+plt.ylabel('X Coordinate (meters)')
+```
 
+![Example plot of captured data](images/simple_xcoord_plot.png "Example Plot")
 
-.................................SKETCH GOES HERE.............
+# Configuration file
+
+The goal is to identify devices by serial, in order to keep the same name for the same physical device. for maing it work, you just have to change serials and names in the 'config.json' file. Here is an example of config file :
+
+```
+{
+    "devices":[
+        {
+          "name": "hmd",
+          "type": "HMD",
+          "serial":"XXX-XXXXXXXX"
+        },
+        {
+          "name": "tracking_reference_1",
+          "type": "Tracking Reference",
+          "serial":"LHB-XXXXXXXX"
+        },
+        {
+          "name": "controller_1",
+          "type": "Controller",
+          "serial":"XXX-XXXXXXXX"
+        },
+        {
+          "name": "tracker_1",
+          "type": "Tracker",
+          "serial":"LHR-XXXXXXXX"
+        }
+    ]
+}
+```
